@@ -15,8 +15,23 @@
   const clearFilterBtn = document.getElementById("clear-filter");
   const clearAllBtn = document.getElementById("clear-all");
 
+  // Modal elements
+  const modal = document.getElementById("entry-modal");
+  const modalBackdrop = document.getElementById("modal-backdrop");
+  const modalDate = document.getElementById("modal-date");
+  const modalTime = document.getElementById("modal-time");
+  const modalDuration = document.getElementById("modal-duration");
+  const modalDescription = document.getElementById("modal-description");
+  const modalEndHour = document.getElementById("modal-end-hour");
+  const modalEndMinute = document.getElementById("modal-end-minute");
+  const modalEndAmpm = document.getElementById("modal-end-ampm");
+  const modalCloseBtn = document.getElementById("modal-close");
+  const modalDeleteBtn = document.getElementById("modal-delete");
+  const modalSaveBtn = document.getElementById("modal-save");
+
   let entries = [];
   let currentStartMinutes = 9 * 60; // 9:00 AM default
+  let activeEntryId = null;
 
   function loadEntries() {
     try {
@@ -43,7 +58,7 @@
   }
 
   function formatMinutesTo12h(minutes) {
-    minutes = ((minutes % (24 * 60)) + (24 * 60)) % (24 * 60); // normalize
+    minutes = ((minutes % (24 * 60)) + (24 * 60)) % (24 * 60);
     let hour24 = Math.floor(minutes / 60);
     const minute = minutes % 60;
     const ampm = hour24 >= 12 ? "PM" : "AM";
@@ -119,6 +134,7 @@
       })
       .forEach((entry) => {
         const tr = document.createElement("tr");
+        tr.dataset.id = entry.id;
 
         const durationMinutes = getDurationMinutes(entry);
         totalMinutes += durationMinutes;
@@ -128,7 +144,6 @@
           <td>${entry.date}</td>
           <td>${h}h ${String(m).padStart(2, "0")}m</td>
           <td>${entry.description.replace(/\n/g, "<br>")}</td>
-          <td><button type="button" class="secondary small delete-btn" data-id="${entry.id}">Delete</button></td>
         `;
 
         entriesBody.appendChild(tr);
@@ -150,12 +165,53 @@
     entries = entries.filter((e) => e.id !== id);
     saveEntries();
     render();
+
     const dateStr = dateInput.value;
     if (dateStr) {
       setDefaultStartForDate(dateStr);
     }
   }
 
+  // Modal helpers
+  function openEntryModal(entryId) {
+    const entry = entries.find((e) => e.id === entryId);
+    if (!entry) return;
+
+    activeEntryId = entryId;
+
+    modalDate.textContent = entry.date;
+    const startStr = formatMinutesTo12h(entry.startMinutes);
+    const endStr = formatMinutesTo12h(entry.endMinutes);
+    modalTime.textContent = `${startStr} — ${endStr}`;
+
+    const dur = minutesToHM(getDurationMinutes(entry));
+    modalDuration.textContent = `Duration: ${dur.h}h ${String(dur.m).padStart(
+      2,
+      "0"
+    )}m`;
+
+    modalDescription.value = entry.description;
+
+    const endMinutes = entry.endMinutes;
+    let hour24 = Math.floor(endMinutes / 60);
+    const minute = endMinutes % 60;
+    const ampm = hour24 >= 12 ? "PM" : "AM";
+    let hour12 = hour24 % 12;
+    if (hour12 === 0) hour12 = 12;
+
+    modalEndHour.value = String(hour12);
+    modalEndMinute.value = String(minute);
+    modalEndAmpm.value = ampm;
+
+    modal.classList.remove("hidden");
+  }
+
+  function closeEntryModal() {
+    activeEntryId = null;
+    modal.classList.add("hidden");
+  }
+
+  // Form submit (add entry)
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const date = dateInput.value;
@@ -175,7 +231,10 @@
       return;
     }
 
-    const durationMinutes = computeDurationMinutes(currentStartMinutes, endMinutes);
+    const durationMinutes = computeDurationMinutes(
+      currentStartMinutes,
+      endMinutes
+    );
     if (durationMinutes <= 0) {
       alert("End time must be after the start time.");
       return;
@@ -187,7 +246,7 @@
       startMinutes: currentStartMinutes,
       endMinutes,
       durationMinutes,
-      description
+      description,
     };
 
     addEntry(entry);
@@ -198,16 +257,60 @@
     descriptionInput.value = "";
   });
 
+  // Click row -> open modal
   entriesBody.addEventListener("click", (e) => {
-    const btn = e.target.closest(".delete-btn");
-    if (!btn) return;
-    const id = btn.getAttribute("data-id");
-    if (!id) return;
+    const row = e.target.closest("tr");
+    if (!row || !row.dataset.id) return;
+    openEntryModal(row.dataset.id);
+  });
+
+  // Modal buttons
+  modalCloseBtn.addEventListener("click", closeEntryModal);
+  modalBackdrop.addEventListener("click", closeEntryModal);
+
+  modalDeleteBtn.addEventListener("click", () => {
+    if (!activeEntryId) return;
     if (confirm("Delete this entry?")) {
-      deleteEntry(id);
+      deleteEntry(activeEntryId);
+      closeEntryModal();
     }
   });
 
+  modalSaveBtn.addEventListener("click", () => {
+    if (!activeEntryId) return;
+    const idx = entries.findIndex((e) => e.id === activeEntryId);
+    if (idx === -1) return;
+
+    const entry = entries[idx];
+
+    const newDesc = modalDescription.value.trim();
+    const h = modalEndHour.value;
+    const m = modalEndMinute.value;
+    const ap = modalEndAmpm.value;
+
+    const newEndMinutes = toMinutesFrom12h(h, m, ap);
+    if (newEndMinutes == null) {
+      alert("Please choose a valid end time.");
+      return;
+    }
+
+    const newDuration = computeDurationMinutes(entry.startMinutes, newEndMinutes);
+    if (newDuration <= 0) {
+      alert("End time must be after the start time.");
+      return;
+    }
+
+    entry.description = newDesc;
+    entry.endMinutes = newEndMinutes;
+    entry.durationMinutes = newDuration;
+
+    entries[idx] = entry;
+    saveEntries();
+    render();
+    closeEntryModal();
+  });
+
+  // Filters & clear buttons
   filterDateInput.addEventListener("change", render);
 
   clearFilterBtn.addEventListener("click", () => {
@@ -228,6 +331,7 @@
     }
   });
 
+  // Date change
   dateInput.addEventListener("change", () => {
     const dateStr = dateInput.value;
     if (!dateStr) return;
@@ -236,6 +340,7 @@
     render();
   });
 
+  // Initial setup
   const today = new Date().toISOString().slice(0, 10);
   dateInput.value = today;
   filterDateInput.value = today;
