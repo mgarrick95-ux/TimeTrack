@@ -226,24 +226,91 @@ td {
   vertical-align: top;
 }
 
-th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-}
-
 tbody tr:nth-child(even) {
   background: rgba(15, 23, 42, 0.5);
 }
 
 tbody tr:hover {
   background: rgba(30, 64, 175, 0.5);
+  cursor: pointer;
 }
 
-.delete-btn {
-  border-radius: 999px;
-  padding: 0.25rem 0.6rem;
-  font-size: 0.7rem;
+.tap-hint {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+/* Modal */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.modal-dialog {
+  position: relative;
+  background: #020617;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem 1.1rem;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 25px 50px rgba(15, 23, 42, 0.9);
+  max-width: 420px;
+  width: calc(100% - 2.5rem);
+  z-index: 1;
+}
+
+.modal-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.modal-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.modal-meta.strong {
+  font-weight: 600;
+  color: #e5e7eb;
+  margin-top: 0.25rem;
+}
+
+.modal-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #cbd5f5;
+}
+
+.modal-label textarea {
+  width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  flex-wrap: wrap;
 }
 
 footer {
@@ -270,5 +337,9 @@ footer {
   td:nth-child(3) {
     white-space: normal;
     min-width: 220px;
+  }
+
+  .modal-dialog {
+    width: calc(100% - 1.5rem);
   }
 }
