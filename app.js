@@ -1,10 +1,12 @@
 (function () {
-  const STORAGE_KEY = "simple_time_tracker_entries_kid_v3";
+  const STORAGE_KEY = "simple_time_tracker_entries_final_v1";
 
   const form = document.getElementById("time-form");
   const dateInput = document.getElementById("date");
   const startDisplay = document.getElementById("start-display");
-  const endInput = document.getElementById("end-time");
+  const endHour = document.getElementById("end-hour");
+  const endMinute = document.getElementById("end-minute");
+  const endAmpm = document.getElementById("end-ampm");
   const descriptionInput = document.getElementById("description");
   const entriesBody = document.getElementById("entries-body");
   const totalTimeEl = document.getElementById("total-time");
@@ -14,7 +16,7 @@
   const clearAllBtn = document.getElementById("clear-all");
 
   let entries = [];
-  let currentStartMinutes = 9 * 60; // default 9:00 AM
+  let currentStartMinutes = 9 * 60; // 9:00 AM default
 
   function loadEntries() {
     try {
@@ -51,15 +53,19 @@
     return hour12 + ":" + minuteStr + " " + ampm;
   }
 
-  function timeStrToMinutes24(timeStr) {
-    if (!timeStr) return null;
-    const parts = timeStr.split(":");
-    if (parts.length !== 2) return null;
-    const h = Number(parts[0]);
-    const m = Number(parts[1]);
+  function toMinutesFrom12h(hour12, minute, ampm) {
+    let h = Number(hour12);
+    let m = Number(minute);
     if (Number.isNaN(h) || Number.isNaN(m)) return null;
-    if (h < 0 || h > 23) return null;
+    if (h < 1 || h > 12) return null;
     if (m < 0 || m > 59) return null;
+
+    const upper = (ampm || "AM").toUpperCase();
+    if (upper === "AM") {
+      if (h === 12) h = 0;
+    } else if (upper === "PM") {
+      if (h !== 12) h += 12;
+    }
     return h * 60 + m;
   }
 
@@ -153,17 +159,19 @@
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const date = dateInput.value;
-    const endTimeStr = endInput.value;
+    const hourVal = endHour.value;
+    const minuteVal = endMinute.value;
+    const ampmVal = endAmpm.value;
     const description = descriptionInput.value.trim();
 
-    if (!date || !endTimeStr || !description) {
+    if (!date || !hourVal || minuteVal === "" || !ampmVal || !description) {
       alert("Please fill in date, end time, and what was done.");
       return;
     }
 
-    const endMinutes = timeStrToMinutes24(endTimeStr);
+    const endMinutes = toMinutesFrom12h(hourVal, minuteVal, ampmVal);
     if (endMinutes == null) {
-      alert("Please enter a valid end time.");
+      alert("Please choose a valid end time.");
       return;
     }
 
@@ -187,7 +195,6 @@
     currentStartMinutes = endMinutes;
     updateStartDisplay();
 
-    endInput.value = "";
     descriptionInput.value = "";
   });
 

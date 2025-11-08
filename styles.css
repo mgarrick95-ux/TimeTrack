@@ -130,6 +130,20 @@ textarea {
   width: 100%;
 }
 
+.time-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.time-input-row select {
+  min-width: 3.5rem;
+}
+
+.time-colon {
+  padding-bottom: 0.1rem;
+}
+
 .start-display {
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.6);
