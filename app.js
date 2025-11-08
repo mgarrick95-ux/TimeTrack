@@ -1,5 +1,5 @@
 (function () {
-  const STORAGE_KEY = "simple_time_tracker_entries_final_v1";
+  const STORAGE_KEY = "simple_time_tracker_entries_final_v2";
 
   const form = document.getElementById("time-form");
   const dateInput = document.getElementById("date");
