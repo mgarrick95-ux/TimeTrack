@@ -9,7 +9,6 @@
   <meta name="theme-color" content="#020617" />
   <link rel="apple-touch-icon" href="icon.svg" />
 </head>
-</head>
 <body>
   <div class="app-shell">
     <header>
@@ -66,54 +65,3 @@
             What did you work on?
             <textarea id="description" rows="2" placeholder="Math, reading, break, etc." required></textarea>
           </label>
-
-          <div class="actions">
-            <button type="submit">Add Entry</button>
-            <button type="button" id="clear-all" class="secondary">Clear All</button>
-          </div>
-        </form>
-      </section>
-
-      <section class="card">
-        <div class="card-header">
-          <h2>Logged Time</h2>
-          <div class="card-tools">
-            <label class="filter-label">
-              Filter by date
-              <input type="date" id="filter-date" />
-            </label>
-            <button type="button" id="clear-filter" class="secondary small">Clear Filter</button>
-          </div>
-        </div>
-
-        <div class="summary-row">
-          <span id="entry-count">0 entries</span>
-          <span id="total-time">Total: 0h 0m</span>
-        </div>
-
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Duration</th>
-                <th>What you did</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody id="entries-body">
-              <!-- rows injected here -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <small>All data is stored locally in this browser.</small>
-    </footer>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
