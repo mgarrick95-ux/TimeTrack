@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TimeTracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <h1>TimeTracker</h1>
+      <p class="tagline">Simple blocks of time, one task at a time ✨</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>New Entry</h2>
+        <form id="time-form">
+          <div class="field-row">
+            <label>
+              Date
+              <input type="date" id="date" required />
+            </label>
+            <label>
+              Start (auto)
+              <div id="start-display" class="start-display">--:--</div>
+            </label>
+            <label>
+              End
+              <input
+                type="time"
+                id="end-time"
+                required
+              />
+            </label>
+          </div>
+
+          <label class="full-width">
+            What did you work on?
+            <textarea id="description" rows="2" placeholder="Math, reading, break, etc." required></textarea>
+          </label>
+
+          <div class="actions">
+            <button type="submit">Add Entry</button>
+            <button type="button" id="clear-all" class="secondary">Clear All</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Logged Time</h2>
+          <div class="card-tools">
+            <label class="filter-label">
+              Filter by date
+              <input type="date" id="filter-date" />
+            </label>
+            <button type="button" id="clear-filter" class="secondary small">Clear Filter</button>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span id="entry-count">0 entries</span>
+          <span id="total-time">Total: 0h 0m</span>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Duration</th>
+                <th>What you did</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="entries-body">
+              <!-- rows injected here -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <small>All data is stored locally in this browser.</small>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
