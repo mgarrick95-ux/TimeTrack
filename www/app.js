@@ -121,7 +121,7 @@
       ? entries.filter((e) => e.date === filterDate)
       : entries;
 
-    entriesBody.innerHTML = "";
+    entriesBody.innerHTML = ";
     let totalMinutes = 0;
 
     filtered
@@ -220,7 +220,7 @@
     const ampmVal = endAmpm.value;
     const description = descriptionInput.value.trim();
 
-    if (!date || !hourVal || minuteVal === "" || !ampmVal || !description) {
+    if (!date || !hourVal || minuteVal === " || !ampmVal || !description) {
       alert("Please fill in date, end time, and what was done.");
       return;
     }
@@ -254,7 +254,7 @@
     currentStartMinutes = endMinutes;
     updateStartDisplay();
 
-    descriptionInput.value = "";
+    descriptionInput.value = ";
   });
 
   // Click row -> open modal
@@ -314,7 +314,7 @@
   filterDateInput.addEventListener("change", render);
 
   clearFilterBtn.addEventListener("click", () => {
-    filterDateInput.value = "";
+    filterDateInput.value = ";
     render();
   });
 
@@ -356,4 +356,4 @@ if ("serviceWorker" in navigator) {
       .register("/sw.js")
       .catch((error) => console.error("Service worker registration failed:", error));
   });
-}
+}

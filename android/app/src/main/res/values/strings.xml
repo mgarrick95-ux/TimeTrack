@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Grimms Time Tracker</string>
-    <string name="title_activity_main">Grimms Time Tracker</string>
+    <string name="app_name">Grimms Time</string>
+    <string name="title_activity_main">Grimms Time</string>
     <string name="package_name">com.grimms.timetracker</string>
     <string name="custom_url_scheme">com.grimms.timetracker</string>
 </resources>
+

@@ -433,7 +433,7 @@ header {
 }
 
 header::before {
-  content: "";
+  content: ";
   position: absolute;
   inset: -20px -30px 0 -30px;
   background:
@@ -490,4 +490,131 @@ button:hover {
 
 main {
   margin-top: -6px;
+}
+
+
+
+
+/* =========================
+   INTRO OVERLAY
+========================= */
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #0a1a2f 0%, #050b15 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 1;
+  pointer-events: none;
+  animation: introOverlayOut 0.8s ease 4.1s forwards;
+}
+
+.intro-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro-content {
+  position: relative;
+  text-align: center;
+  transform: translateY(-18px);
+}
+
+.intro-logo {
+  width: clamp(720px, 110vw, 1100px);
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin: 0 auto;
+  opacity: 0;
+  transform: scale(0.96);
+  animation: introLogoIn 0.9s ease 0.25s forwards;
+}
+
+/* Glow behind logo */
+.intro-glow {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: clamp(320px, 62vw, 520px);
+  height: clamp(320px, 62vw, 520px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(0, 180, 255, 0.22), transparent 70%);
+  filter: blur(34px);
+  z-index: 1;
+}
+
+/* Signature */
+.intro-signature {
+  position: absolute;
+  top: calc(100% + 18px);
+  left: calc(50% + 40px);
+  transform: translateX(-50%);
+  margin: 0;
+  font-family: "Cinzel", serif;
+  font-size: clamp(0.65rem, 1.6vw, 0.85rem);
+  color: rgba(255, 255, 255, 0.42);
+  letter-spacing: 0.9px;
+  opacity: 0;
+  white-space: nowrap;
+  animation: introSignatureIn 0.7s ease 0.95s forwards, introSignatureOut 0.6s ease 2.8s forwards;
+}
+
+.intro-signature.fade-out {
+  opacity: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+@keyframes introLogoIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes introSignatureIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes introSignatureOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+
+
+@keyframes introOverlayOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
