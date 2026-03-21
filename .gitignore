@@ -3,3 +3,10 @@ node_modules/
 .gradle/
 dist/
 build/
+
+android/keystore.properties
+android/release-key.keystore
+android/app/build.gradle.bak
+keystore.properties.backup
+release-key.backup.keystore
+www/styles.backup.css
