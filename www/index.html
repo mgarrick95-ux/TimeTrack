@@ -5,15 +5,13 @@
   <title>Grimms Time Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="styles.css" />
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <meta name="theme-color" content="#020617" />
   <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="manifest" href="/manifest.json" />
 </head>
 <body>
-
-  <!-- INTRO OVERLAY -->
   <div id="intro-overlay" class="intro-overlay">
     <div class="intro-content">
       <img src="logo1.png" alt="Grimms Logo" class="intro-logo" />
@@ -21,54 +19,43 @@
       <p class="intro-signature">— Grimm Kreations</p>
     </div>
   </div>
+
   <div class="app-shell">
     <header>
-  <div class="logo-wrap"><img src="logo.png" class="logo" alt="Grimms Time Tracker" /></div>
-  <p class="tagline">Trackin' your Slackin'</p>
-</header>
+      <div class="logo-wrap">
+        <img src="logo.png" class="logo" alt="Grimms Time Tracker" />
+      </div>
+      <p class="tagline">Trackin' your Slackin'</p>
+    </header>
 
     <main>
       <section class="card">
-        <h2>New Entry</h2>
+        <div class="new-entry-header">
+          <h2>New Entry</h2>
+          <button type="button" id="default-time-btn" class="default-time-btn">
+            Default: 9:00 AM
+          </button>
+        </div>
+
         <form id="time-form">
           <div class="field-row">
             <label>
               Date
-              <input type="date" id="date" required />
+              <div class="date-nav-row">
+                <button type="button" id="date-prev" class="secondary icon-nav-btn" aria-label="Previous day">‹</button>
+                <button type="button" id="date" class="start-display time-display-button">MM/DD/YYYY</button>
+                <button type="button" id="date-next" class="secondary icon-nav-btn" aria-label="Next day">›</button>
+              </div>
             </label>
+
             <label>
-              Start (auto)
-              <div id="start-display" class="start-display">--:--</div>
+              Start
+              <button type="button" id="start-display" class="start-display time-display-button">--:--</button>
             </label>
+
             <label>
               End
-              <div class="time-input-row">
-                <select id="end-hour">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
-                </select>
-                <span class="time-colon">:</span>
-                <select id="end-minute">
-                  <option value="0">00</option>
-                  <option value="15">15</option>
-                  <option value="30">30</option>
-                  <option value="45">45</option>
-                </select>
-                <select id="end-ampm">
-                  <option value="AM">AM</option>
-                  <option value="PM">PM</option>
-                </select>
-              </div>
+              <button type="button" id="end-display" class="start-display time-display-button">--:--</button>
             </label>
           </div>
 
@@ -79,7 +66,6 @@
 
           <div class="actions">
             <button type="submit">Add Entry</button>
-            <button type="button" id="clear-all" class="secondary">Clear All</button>
           </div>
         </form>
       </section>
@@ -90,7 +76,7 @@
           <div class="card-tools">
             <label class="filter-label">
               Filter by date
-              <input type="date" id="filter-date" />
+              <button type="button" id="filter-date" class="start-display time-display-button">All dates</button>
             </label>
             <button type="button" id="clear-filter" class="secondary small">Clear Filter</button>
           </div>
@@ -110,13 +96,16 @@
                 <th>What you did</th>
               </tr>
             </thead>
-            <tbody id="entries-body">
-              <!-- rows injected here -->
-            </tbody>
+            <tbody id="entries-body"></tbody>
           </table>
         </div>
+
         <p class="tap-hint">Tap a row to view, edit, or delete it.</p>
       </section>
+
+      <div class="page-end-actions">
+        <button type="button" id="clear-all" class="secondary">Clear All</button>
+      </div>
     </main>
 
     <footer>
@@ -124,7 +113,6 @@
     </footer>
   </div>
 
-  <!-- Entry modal -->
   <div id="entry-modal" class="modal hidden">
     <div id="modal-backdrop" class="modal-backdrop"></div>
     <div class="modal-dialog">
@@ -139,34 +127,13 @@
       </label>
 
       <label class="modal-label">
+        Start time
+        <button type="button" id="modal-start-display" class="start-display time-display-button">--:--</button>
+      </label>
+
+      <label class="modal-label">
         End time
-        <div class="time-input-row">
-          <select id="modal-end-hour">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-          </select>
-          <span class="time-colon">:</span>
-          <select id="modal-end-minute">
-            <option value="0">00</option>
-            <option value="15">15</option>
-            <option value="30">30</option>
-            <option value="45">45</option>
-          </select>
-          <select id="modal-end-ampm">
-            <option value="AM">AM</option>
-            <option value="PM">PM</option>
-          </select>
-        </div>
+        <button type="button" id="modal-end-display" class="start-display time-display-button">--:--</button>
       </label>
 
       <div class="modal-actions">
@@ -177,41 +144,83 @@
     </div>
   </div>
 
+  <div id="time-picker-modal" class="modal hidden">
+    <div id="time-picker-backdrop" class="modal-backdrop"></div>
+    <div class="modal-dialog time-picker-dialog">
+      <h3 id="time-picker-title">Choose time</h3>
+
+      <div class="time-picker-grid">
+        <div class="time-picker-col">
+          <button type="button" id="tp-hour-up" class="secondary small">▲</button>
+          <div id="tp-hour-display" class="time-picker-value">9</div>
+          <button type="button" id="tp-hour-down" class="secondary small">▼</button>
+        </div>
+
+        <div class="time-picker-sep">:</div>
+
+        <div class="time-picker-col">
+          <button type="button" id="tp-minute-up" class="secondary small">▲</button>
+          <div id="tp-minute-display" class="time-picker-value">00</div>
+          <button type="button" id="tp-minute-down" class="secondary small">▼</button>
+        </div>
+
+        <div class="time-picker-col">
+          <button type="button" id="tp-ampm-toggle" class="secondary">AM</button>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="time-picker-apply">Apply</button>
+        <button type="button" id="time-picker-cancel" class="secondary">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="calendar-modal" class="modal hidden">
+    <div id="calendar-backdrop" class="modal-backdrop"></div>
+    <div class="modal-dialog calendar-dialog">
+      <div class="calendar-header">
+        <button type="button" id="calendar-prev" class="secondary small">‹</button>
+        <div id="calendar-title" class="calendar-title">March 2026</div>
+        <button type="button" id="calendar-next" class="secondary small">›</button>
+      </div>
+
+      <div class="calendar-weekdays">
+        <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+      </div>
+
+      <div id="calendar-grid" class="calendar-grid"></div>
+
+      <div class="modal-actions">
+        <button type="button" id="calendar-clear" class="secondary">Clear</button>
+        <button type="button" id="calendar-cancel" class="secondary">Cancel</button>
+        <button type="button" id="calendar-apply">Apply</button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
-<script>
-  const placeholders = [
-    "This better be worth my time.",
-    "Saving the world, one task at a time.",
-    "Make it look like you tried.",
-    "Let’s pretend this is productive."
-  ];
+  <script>
+    const placeholders = [
+      "This better be worth my time.",
+      "Saving the world, one task at a time.",
+      "Make it look like you tried.",
+      "Let's pretend this is productive."
+    ];
 
-  let index = localStorage.getItem("placeholderIndex");
-  index = index ? parseInt(index) : 0;
+    let index = localStorage.getItem("placeholderIndex");
+    index = index ? parseInt(index, 10) : 0;
 
-  const nextIndex = (index + 1) % placeholders.length;
-  localStorage.setItem("placeholderIndex", nextIndex);
+    const nextIndex = (index + 1) % placeholders.length;
+    localStorage.setItem("placeholderIndex", nextIndex);
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const textarea = document.getElementById("description");
-    if (textarea) {
-      textarea.placeholder = placeholders[index];
-    }
-  });
-</script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const textarea = document.getElementById("description");
+      if (textarea) {
+        textarea.placeholder = placeholders[index];
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
