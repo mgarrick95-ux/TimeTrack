@@ -10,3 +10,8 @@ android/app/build.gradle.bak
 keystore.properties.backup
 release-key.backup.keystore
 www/styles.backup.css
+android/upload_certificate.pem
+android/app/src/main/assets/
+backup-broken-state/
+*.bak*
+*.code-workspace
